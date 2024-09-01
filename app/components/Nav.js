@@ -13,9 +13,11 @@ export default function Nav() {
             height={100}
           />
         </Link>
-        <Link href="/drivers">Schedule</Link>
-        <Link href="/drivers">2024 Season</Link>
-        <Link href="/drivers">Teams</Link>
+        <Link href="/schedule" className="active:border active:">
+          Schedule
+        </Link>
+        <Link href="/2024season">2024 Season</Link>
+        <Link href="/teams">Teams</Link>
         <Link href="/drivers">Drivers</Link>
       </nav>
     </div>
