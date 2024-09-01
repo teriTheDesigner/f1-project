@@ -1,5 +1,6 @@
 import { Inter, Audiowide, Titillium_Web } from "next/font/google";
 import "./globals.css";
+import Nav from "./components/Nav";
 
 const inter = Inter({ subsets: ["latin"] });
 const audiowide = Audiowide({ subsets: ["latin"], weight: "400" });
@@ -13,7 +14,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={audiowide.className}>{children}</body>
+      <body className={audiowide.className}>
+        <Nav />
+        {children}
+      </body>
     </html>
   );
 }
