@@ -16,12 +16,23 @@ export default function Drivers() {
 
   return (
     <main className="p-4">
+      <h1 className="lg:text-7xl text-3xl mt-10 font-extrabold border-t-[13px] border-r-[13px] border-black rounded-tr-3xl mb-12">
+        🏁 F1 Drivers 2024
+      </h1>
+      <p className="titillium-web bg-slate-100 p-5 rounded-xl text-slate-600 mb-12 text-sm">
+        Explore the official F1 line-up for this season with a detailed
+        breakdown of all drivers, points, and current standings. Stay updated
+        with your favorite F1 drivers, both on and off the track.
+      </p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {drivers.map((driver) => (
           <div
             key={driver.driver_number}
-            className={`border rounded-lg p-4 flex flex-col items-center justify-center shadow-md`}
-            style={{ backgroundColor: `#${driver.team_colour}` }}
+            className={` rounded-tr-3xl p-4 flex flex-col items-center justify-center shadow-md`}
+            style={{
+              borderTop: `10px solid #${driver.team_colour}`,
+              borderRight: `10px solid #${driver.team_colour}`,
+            }}
           >
             <img
               src={driver.headshot_url}

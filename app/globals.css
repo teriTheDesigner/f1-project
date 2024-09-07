@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+.audiowide {
+  font-family: "Audiowide", sans-serif;
+}
+
+.titillium-web {
+  font-family: "Titillium Web", sans-serif;
+}
+
+.inter {
+  font-family: "Inter", sans-serif;
+}
+
 :root {
   /* --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
