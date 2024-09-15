@@ -52,7 +52,7 @@ body {
 
 .image {
   width: 300px;
-  animation: moveAndFade 1.6s ease-in forwards;
+  animation: moveAndFade 1.2s ease-in forwards;
 }
 
 @keyframes fadeOut {
