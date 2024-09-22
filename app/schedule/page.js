@@ -15,36 +15,61 @@ export default function Schedule() {
       .catch((error) => console.error("Error fetching sessions data:", error));
   }, []);
 
-  const groupSessionsByCircuit = (sessions) => {
+  const groupSessionsByYearAndCircuit = (sessions) => {
     return sessions.reduce((acc, session) => {
-      const { circuit_key, circuit_short_name } = session;
-      if (!acc[circuit_key]) {
-        acc[circuit_key] = {
+      const { year, circuit_key, circuit_short_name, location, country_name } =
+        session;
+
+      if (!acc[year]) {
+        acc[year] = {};
+      }
+
+      if (!acc[year][circuit_key]) {
+        acc[year][circuit_key] = {
           circuit_short_name,
+          location,
+          country_name,
           sessions: [],
         };
       }
-      acc[circuit_key].sessions.push(session);
+
+      acc[year][circuit_key].sessions.push(session);
+
       return acc;
     }, {});
   };
 
-  // Grouping the sessions
-  const groupedSessions = groupSessionsByCircuit(sessions);
+  const groupedSessions = groupSessionsByYearAndCircuit(sessions);
 
   return (
     <div>
-      <h1>Schedule 2024</h1>
-      {Object.keys(groupedSessions).map((circuitKey) => (
-        <div key={circuitKey} style={{ marginBottom: "20px" }}>
-          <h2>{groupedSessions[circuitKey].circuit_short_name} </h2>
-          <ul>
-            {groupedSessions[circuitKey].sessions.map((session) => (
-              <li key={session.session_key}>{session.session_name}</li>
+      <h1>Schedule</h1>
+
+      {Object.keys(groupedSessions)
+        .sort((a, b) => b - a)
+        .map((year) => (
+          <div key={year} style={{ marginBottom: "40px" }}>
+            <h2>{year}</h2>
+
+            {Object.keys(groupedSessions[year]).map((circuitKey) => (
+              <div key={circuitKey} style={{ marginLeft: "20px" }}>
+                <h3>{groupedSessions[year][circuitKey].country_name} </h3>
+                <h4>{groupedSessions[year][circuitKey].location} </h4>
+                <div style={{ marginBottom: "40px" }}>
+                  {groupedSessions[year][circuitKey].sessions
+                    .sort(
+                      (a, b) => new Date(a.date_start) - new Date(b.date_start)
+                    )
+                    .map((session) => (
+                      <p className="titillium-web" key={session.session_key}>
+                        {session.session_name}
+                      </p>
+                    ))}
+                </div>
+              </div>
             ))}
-          </ul>
-        </div>
-      ))}
+          </div>
+        ))}
     </div>
   );
 }
