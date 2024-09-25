@@ -12,7 +12,7 @@ export default function Schedule() {
     },
     {
       location: "Budapest",
-      img: "/LasVegas.jpg",
+      img: "/Budapest.jpg",
     },
     {
       location: "Imola",
@@ -32,7 +32,7 @@ export default function Schedule() {
     },
     {
       location: "Spielberg",
-      img: "/LasVegas.jpg",
+      img: "/LasVegas2.jpg",
     },
     {
       location: "Monaco",
@@ -84,11 +84,11 @@ export default function Schedule() {
     },
     {
       location: "São Paulo",
-      img: "/UAE.jpg",
+      img: "/SaoPaulo.jpg",
     },
     {
       location: "Mexico City",
-      img: "/UAE.jpg",
+      img: "/MexicoCity.jpg",
     },
     {
       location: "Yas Island",
@@ -100,7 +100,7 @@ export default function Schedule() {
     },
     {
       location: "Las Vegas",
-      img: "/LasVegas.jpg",
+      img: "/LasVegas2.jpg",
     },
   ];
 
@@ -161,10 +161,15 @@ export default function Schedule() {
                     groupedSessions[year][circuitKey].location
                   )}
                   alt={`Image of ${groupedSessions[year][circuitKey].location}`}
-                  className="w-full h-auto"
                 />
-                <h3>{groupedSessions[year][circuitKey].country_name} </h3>
-                <h4>{groupedSessions[year][circuitKey].location} </h4>
+                <div className="flex flex-col gap-2 mt-3">
+                  <h3 className="text-xl">
+                    {groupedSessions[year][circuitKey].country_name}{" "}
+                  </h3>
+                  <h4 className="titillium-web uppercase text-sm">
+                    {groupedSessions[year][circuitKey].location}{" "}
+                  </h4>
+                </div>
                 {/* <div style={{ marginBottom: "40px" }}>
                   {groupedSessions[year][circuitKey].sessions
                     .sort(
