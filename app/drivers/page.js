@@ -25,7 +25,7 @@ export default function Drivers() {
         breakdown of all drivers, points, and current standings. Stay updated
         with your favorite F1 drivers, both on and off the track.
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {drivers.map((driver) => (
           <div
             key={driver.driver_number}
@@ -35,14 +35,16 @@ export default function Drivers() {
               borderRight: `10px solid #${driver.team_colour}`,
             }}
           >
-            <p className="text-4xl">{driver.driver_number}</p>
+            {" "}
+            <img
+              src={driver.headshot_url}
+              alt={`${driver.full_name} headshot`}
+              className="w-32 h-32  mb-4"
+            />
             <div className="flex-col items-center justify-center">
-              <img
-                src={driver.headshot_url}
-                alt={`${driver.full_name} headshot`}
-                className="w-24 h-24  mb-4"
-              />
-              <h2 className="text-lg font-semibold mb-2">{driver.full_name}</h2>
+              <p className="text-4xl">{driver.driver_number}</p>
+
+              <h2 className="text-lg font-semibold mt-6">{driver.full_name}</h2>
               <p className="text-sm text-gray-800">Team: {driver.team_name}</p>
             </div>
           </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function Schedule() {
   const [sessions, setSessions] = useState([]);
@@ -155,7 +156,11 @@ export default function Schedule() {
             <h2 className="col-span-3 text-xl font-bold">{year}</h2>
 
             {Object.keys(groupedSessions[year]).map((circuitKey) => (
-              <div key={circuitKey} className="border p-4 rounded shadow-sm">
+              <Link
+                href="/grand-prix/something"
+                key={circuitKey}
+                className="border p-4 pointer rounded-xl shadow-sm"
+              >
                 <img
                   src={getImageForLocation(
                     groupedSessions[year][circuitKey].location
@@ -192,7 +197,7 @@ export default function Schedule() {
                       </p>
                     ))}
                 </div> */}
-              </div>
+              </Link>
             ))}
           </div>
         ))}
