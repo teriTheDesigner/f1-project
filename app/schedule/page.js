@@ -8,7 +8,7 @@ export default function Schedule() {
   const locations = [
     {
       location: "Silverstone",
-      img: "/UAE.jpg",
+      img: "/silverstone.jpg",
     },
     {
       location: "Budapest",
@@ -44,11 +44,11 @@ export default function Schedule() {
     },
     {
       location: "Monza",
-      img: "/LasVegas.jpg",
+      img: "/monza1.jpg",
     },
     {
       location: "Suzuka",
-      img: "/UAE.jpg",
+      img: "/suzuka.jpg",
     },
     {
       location: "Shanghai",
@@ -56,11 +56,11 @@ export default function Schedule() {
     },
     {
       location: "Zandvoort",
-      img: "/LasVegas.jpg",
+      img: "/zandvoort.jpg",
     },
     {
       location: "Marina Bay",
-      img: "/UAE.jpg",
+      img: "/marinabay.jpg",
     },
     {
       location: "Sakhir",
@@ -80,7 +80,7 @@ export default function Schedule() {
     },
     {
       location: "Austin",
-      img: "/UAE.jpg",
+      img: "/austin.jpg",
     },
     {
       location: "São Paulo",
@@ -96,7 +96,7 @@ export default function Schedule() {
     },
     {
       location: "Lusail",
-      img: "/UAE.jpg",
+      img: "/lusail.jpg",
     },
     {
       location: "Las Vegas",

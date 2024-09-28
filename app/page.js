@@ -19,8 +19,11 @@ export default function Home() {
   }
 
   return (
-    <main>
-      <h1 className="text-7xl mt-10 font-extrabold">Helloo to all F1 Fans!</h1>
+    <main className="flex flex-col">
+      <h1 className="text-7xl mt-10 font-extrabold m-auto mb-6">
+        Helloo to all F1 Fans!
+      </h1>
+      <img src="/LasVegas.jpg" alt="las vegas"></img>
     </main>
   );
 }
