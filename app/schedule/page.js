@@ -16,31 +16,31 @@ export default function Schedule() {
     },
     {
       location: "Imola",
-      img: "/UAE.jpg",
+      img: "/imola.jpg",
     },
     {
       location: "Spa-Francorchamps",
-      img: "/UAE.jpg",
+      img: "/Spa-Francorchamps.jpg",
     },
     {
       location: "Melbourne",
-      img: "/UAE.jpg",
+      img: "/melbourne.jpg",
     },
     {
       location: "Barcelona",
-      img: "/LasVegas.jpg",
+      img: "/barcelona.jpg",
     },
     {
       location: "Spielberg",
-      img: "/LasVegas2.jpg",
+      img: "/spielberg.jpg",
     },
     {
       location: "Monaco",
-      img: "/UAE.jpg",
+      img: "/monaco.jpg",
     },
     {
       location: "Montréal",
-      img: "/UAE.jpg",
+      img: "/montreal.jpg",
     },
     {
       location: "Monza",
@@ -52,7 +52,7 @@ export default function Schedule() {
     },
     {
       location: "Shanghai",
-      img: "/UAE.jpg",
+      img: "/shanghai.jpg",
     },
     {
       location: "Zandvoort",
@@ -64,19 +64,19 @@ export default function Schedule() {
     },
     {
       location: "Sakhir",
-      img: "/UAE.jpg",
+      img: "/sakhir.jpg",
     },
     {
       location: "Baku",
-      img: "/UAE.jpg",
+      img: "/baku.jpg",
     },
     {
       location: "Jeddah",
-      img: "/UAE.jpg",
+      img: "/jeddah.jpg",
     },
     {
       location: "Miami",
-      img: "/LasVegas.jpg",
+      img: "/miami.jpg",
     },
     {
       location: "Austin",
