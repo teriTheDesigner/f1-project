@@ -1,10 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Schedule() {
   const [sessions, setSessions] = useState([]);
+  const router = useRouter();
+
+  const handleLinkClick = (meetingKey) => {
+    router.push(`/grand-prix/${meetingKey}`);
+  };
 
   const locations = [
     {
@@ -115,31 +120,51 @@ export default function Schedule() {
       .catch((error) => console.error("Error fetching sessions data:", error));
   }, []);
 
-  const groupSessionsByYearAndCircuit = (sessions) => {
+  const groupSessionsByYearAndMeeting = (sessions) => {
     return sessions.reduce((acc, session) => {
-      const { year, circuit_key, circuit_short_name, location, country_name } =
-        session;
+      const {
+        year,
+        meeting_key,
+        circuit_short_name,
+        location,
+        country_name,
+        date_end,
+        date_start,
+        gmt_offset,
+        session_key,
+        session_name,
+        session_type,
+      } = session;
 
       if (!acc[year]) {
         acc[year] = {};
       }
 
-      if (!acc[year][circuit_key]) {
-        acc[year][circuit_key] = {
+      // Use meeting_key to group sessions under the same event
+      if (!acc[year][meeting_key]) {
+        acc[year][meeting_key] = {
           circuit_short_name,
           location,
           country_name,
+          date_end,
+          date_start,
+          gmt_offset,
+          meeting_key,
           sessions: [],
         };
       }
 
-      acc[year][circuit_key].sessions.push(session);
+      // Add session to the corresponding meeting_key
+      acc[year][meeting_key].sessions.push(session);
 
       return acc;
     }, {});
   };
 
-  const groupedSessions = groupSessionsByYearAndCircuit(sessions);
+  const groupedSessions = groupSessionsByYearAndMeeting(sessions);
+
+  console.log("all grouped sessions", groupedSessions);
+
   const getImageForLocation = (location) => {
     const locationObj = locations.find((loc) => loc.location === location);
     return locationObj ? locationObj.img : "/default.jpg";
@@ -155,50 +180,28 @@ export default function Schedule() {
           <div key={year} className="grid grid-cols-3 gap-4 mb-10">
             <h2 className="col-span-3 text-xl font-bold">{year}</h2>
 
-            {Object.keys(groupedSessions[year]).map((circuitKey) => (
-              <Link
-                href="/grand-prix/something"
-                key={circuitKey}
-                className="border p-4 pointer rounded-xl shadow-sm"
-              >
-                <img
-                  src={getImageForLocation(
-                    groupedSessions[year][circuitKey].location
-                  )}
-                  alt={`Image of ${groupedSessions[year][circuitKey].location}`}
-                />
-                <div className="flex flex-col gap-2 mt-3">
-                  <h3 className="text-xl">
-                    {groupedSessions[year][circuitKey].country_name}{" "}
-                  </h3>
-                  <h4 className="titillium-web uppercase text-sm">
-                    {groupedSessions[year][circuitKey].location}{" "}
-                  </h4>
+            {Object.keys(groupedSessions[year]).map((meetingKey) => {
+              const meeting = groupedSessions[year][meetingKey];
+
+              return (
+                <div
+                  key={meetingKey}
+                  className="border p-4 pointer rounded-xl shadow-sm"
+                  onClick={() => handleLinkClick(meeting.meeting_key)}
+                >
+                  <img
+                    src={getImageForLocation(meeting.location)}
+                    alt={`Image of ${meeting.location}`}
+                  />
+                  <div className="flex flex-col gap-2 mt-3">
+                    <h3 className="text-xl">{meeting.country_name}</h3>
+                    <h4 className="titillium-web uppercase text-sm">
+                      {meeting.location}
+                    </h4>
+                  </div>
                 </div>
-                {/* <div style={{ marginBottom: "40px" }}>
-                  {groupedSessions[year][circuitKey].sessions
-                    .sort(
-                      (a, b) => new Date(a.date_start) - new Date(b.date_start)
-                    )
-                    .map((session) => (
-                      <p className="titillium-web" key={session.session_key}>
-                        {session.session_name}
-                      </p>
-                    ))}
-                </div> */}
-                {/* <div style={{ marginBottom: "40px" }}>
-                  {groupedSessions[year][circuitKey].sessions
-                    .sort(
-                      (a, b) => new Date(a.date_start) - new Date(b.date_start)
-                    )
-                    .map((session) => (
-                      <p className="titillium-web" key={session.session_key}>
-                        {session.session_name}
-                      </p>
-                    ))}
-                </div> */}
-              </Link>
-            ))}
+              );
+            })}
           </div>
         ))}
     </div>
