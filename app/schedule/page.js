@@ -7,8 +7,8 @@ export default function Schedule() {
   const [sessions, setSessions] = useState([]);
   const router = useRouter();
 
-  const handleLinkClick = (meetingKey) => {
-    router.push(`/grand-prix/${meetingKey}`);
+  const handleLinkClick = (meetingKey, round) => {
+    router.push(`/grand-prix/${meetingKey}?round=${round}`);
   };
 
   const locations = [
@@ -115,7 +115,7 @@ export default function Schedule() {
       .then((response) => response.json())
       .then((data) => {
         setSessions(data);
-        console.log(data);
+        // console.log(data);
       })
       .catch((error) => console.error("Error fetching sessions data:", error));
   }, []);
@@ -163,7 +163,7 @@ export default function Schedule() {
 
   const groupedSessions = groupSessionsByYearAndMeeting(sessions);
 
-  console.log("all grouped sessions", groupedSessions);
+  // console.log("all grouped sessions", groupedSessions);
 
   const getImageForLocation = (location) => {
     const locationObj = locations.find((loc) => loc.location === location);
@@ -180,18 +180,21 @@ export default function Schedule() {
           <div key={year} className="grid grid-cols-3 gap-4 mb-10">
             <h2 className="col-span-3 text-xl font-bold">{year}</h2>
 
-            {Object.keys(groupedSessions[year]).map((meetingKey) => {
+            {Object.keys(groupedSessions[year]).map((meetingKey, index) => {
               const meeting = groupedSessions[year][meetingKey];
 
               return (
                 <div
                   key={meetingKey}
-                  className="border p-4 pointer rounded-xl shadow-sm"
-                  onClick={() => handleLinkClick(meeting.meeting_key)}
+                  className="cursor-pointer border p-4  rounded-xl shadow-sm"
+                  onClick={() =>
+                    handleLinkClick(meeting.meeting_key, index + 1)
+                  }
                 >
                   <img
                     src={getImageForLocation(meeting.location)}
                     alt={`Image of ${meeting.location}`}
+                    className="aspect-video"
                   />
                   <div className="flex flex-col gap-2 mt-3">
                     <h3 className="text-xl">{meeting.country_name}</h3>
