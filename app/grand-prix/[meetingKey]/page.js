@@ -40,6 +40,110 @@ export default function GrandPrix({ params }) {
   const round = searchParams.get("round") || "N/A";
   console.log(round);
 
+  const locations = [
+    {
+      location: "Silverstone",
+      img: "/silverstone.jpg",
+    },
+    {
+      location: "Budapest",
+      img: "/Budapest.jpg",
+    },
+    {
+      location: "Imola",
+      img: "/imola.jpg",
+    },
+    {
+      location: "Spa-Francorchamps",
+      img: "/Spa-Francorchamps.jpg",
+    },
+    {
+      location: "Melbourne",
+      img: "/melbourne.jpg",
+    },
+    {
+      location: "Barcelona",
+      img: "/barcelona.jpg",
+    },
+    {
+      location: "Spielberg",
+      img: "/spielberg.jpg",
+    },
+    {
+      location: "Monaco",
+      img: "/monaco.jpg",
+    },
+    {
+      location: "Montréal",
+      img: "/montreal.jpg",
+    },
+    {
+      location: "Monza",
+      img: "/monza1.jpg",
+    },
+    {
+      location: "Suzuka",
+      img: "/suzuka.jpg",
+    },
+    {
+      location: "Shanghai",
+      img: "/shanghai.jpg",
+    },
+    {
+      location: "Zandvoort",
+      img: "/zandvoort.jpg",
+    },
+    {
+      location: "Marina Bay",
+      img: "/marinabay.jpg",
+    },
+    {
+      location: "Sakhir",
+      img: "/sakhir.jpg",
+    },
+    {
+      location: "Baku",
+      img: "/baku.jpg",
+    },
+    {
+      location: "Jeddah",
+      img: "/jeddah.jpg",
+    },
+    {
+      location: "Miami",
+      img: "/miami.jpg",
+    },
+    {
+      location: "Austin",
+      img: "/austin.jpg",
+    },
+    {
+      location: "São Paulo",
+      img: "/SaoPaulo.jpg",
+    },
+    {
+      location: "Mexico City",
+      img: "/MexicoCity.jpg",
+    },
+    {
+      location: "Yas Island",
+      img: "/UAE.jpg",
+    },
+    {
+      location: "Lusail",
+      img: "/lusail.jpg",
+    },
+    {
+      location: "Las Vegas",
+      img: "/LasVegas2.jpg",
+    },
+  ];
+
+  const getImageForLocation = (location) => {
+    const locationObj = locations.find((loc) => loc.location === location);
+    return locationObj ? locationObj.img : "/default.jpg";
+  };
+
   const formatDate = (dateString, includeTime = false) => {
     const date = new Date(dateString);
     if (includeTime) {
@@ -66,7 +170,11 @@ export default function GrandPrix({ params }) {
     <div>
       <div
         className="w-full h-[38rem] bg-center bg-cover relative"
-        style={{ backgroundImage: `url(${imageUrl})` }}
+        style={{
+          backgroundImage: `url(${getImageForLocation(
+            meetingData[0].location
+          )})`,
+        }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
 
