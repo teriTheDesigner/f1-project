@@ -199,13 +199,13 @@ export default function GrandPrix({ params }) {
           </div>
         </div>
       </div>
-      <div>
-        <h3>Weekend Schedule</h3>
+      <div className="mt-6 ">
+        <h3 className="text-4xl">Weekend Schedule</h3>
         {meetingData.map((session) => (
-          <div key={session.session_key}>
-            <p>{session.session_name}</p>
-            <p>
-              Start: {formatDate(session.date_start, true)} - End:{" "}
+          <div key={session.session_key} className="flex flex-col">
+            <p className="mt-6">{session.session_name}</p>
+            <p className="titillium-web uppercase text-sm">
+              {formatDate(session.date_start, true)} -{" "}
               {formatDate(session.date_end, true)}
             </p>
           </div>
