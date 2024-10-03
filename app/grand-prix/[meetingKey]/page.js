@@ -241,7 +241,7 @@ export default function GrandPrix({ params }) {
           style={{
             display: "grid",
             gridTemplateColumns: `repeat(${daysCount}, 1fr)`,
-            gap: "3rem",
+            justifyContent: "evenly",
           }}
         >
           {Object.entries(sessionsByDay).map(([day, sessions]) => (
@@ -249,11 +249,14 @@ export default function GrandPrix({ params }) {
               key={day}
               className="flex flex-col p-6  border-dotted border-r-4 border-[rgba(255,255,255,0.2)] last:border-r-0"
             >
-              <h4 className="text-2xl font-bold mb-4 border-b-4 pb-4  border-[rgba(255,255,255,0.2)]">
+              <h4 className="text-2xl font-bold mb-6 border-b-4 pb-4  border-[rgba(255,255,255,0.2)]">
                 {day}
               </h4>
               {sessions.map((session) => (
-                <div key={session.session_key} className="mb-6 ">
+                <div
+                  key={session.session_key}
+                  className="mb-6  p-4 rounded-lg border-[rgba(255,255,255,0.2)] border-2"
+                >
                   <p className="text-xl">{session.session_name}</p>
                   <p className="titillium-web uppercase text-sm">
                     {formatTime(session.date_start)} -{" "}
