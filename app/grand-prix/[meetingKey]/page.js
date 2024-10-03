@@ -1,16 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 
-import { useSearchParams } from "next/navigation";
 export default function GrandPrix({ params }) {
-  let imageUrl = "/jeddah.jpg";
-
   const { meetingKey } = params;
   // console.log("Meeting Key:", meetingKey);
   const [meetingData, setMeetingData] = useState(null);
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
     if (meetingKey) {
@@ -38,7 +37,6 @@ export default function GrandPrix({ params }) {
     return <div>No data found for this event.</div>;
   }
   const round = searchParams.get("round") || "N/A";
-  console.log(round);
 
   const locations = [
     {
@@ -139,6 +137,10 @@ export default function GrandPrix({ params }) {
     },
   ];
 
+  const handleLinkClick = (sessionKey) => {
+    router.push(`/schedule/sessions/${sessionKey}`);
+  };
+
   const getImageForLocation = (location) => {
     const locationObj = locations.find((loc) => loc.location === location);
     return locationObj ? locationObj.img : "/default.jpg";
@@ -199,8 +201,7 @@ export default function GrandPrix({ params }) {
   }, {});
 
   const daysCount = Object.keys(sessionsByDay).length;
-
-  console.log(daysCount);
+  console.log("all Sessions", sessionsByDay);
   return (
     <div className="bg-black">
       <div
@@ -235,7 +236,7 @@ export default function GrandPrix({ params }) {
       </div>
       <div className="text-white ml-10 mr-10 pb-12">
         <h3 className="text-4xl mb-4">Weekend Schedule</h3>
-        {/* Render grid with columns representing days */}
+
         <div
           className=" pt-4 border-t-[13px] border-r-[13px] border-[rgba(255,255,255,0.2)] rounded-tr-3xl "
           style={{
@@ -255,10 +256,11 @@ export default function GrandPrix({ params }) {
               {sessions.map((session) => (
                 <div
                   key={session.session_key}
-                  className="mb-6  p-4 rounded-lg border-[rgba(255,255,255,0.2)] border-2"
+                  onClick={() => handleLinkClick(session.session_key)}
+                  className="mb-6 flex flex-col gap-3 p-4 rounded-lg border-[rgba(255,255,255,0.2)] border-2"
                 >
                   <p className="text-xl">{session.session_name}</p>
-                  <p className="titillium-web uppercase text-sm">
+                  <p className="titillium-web uppercase  text-[rgba(255,255,255,0.5)]">
                     {formatTime(session.date_start)} -{" "}
                     {formatTime(session.date_end)}
                   </p>
