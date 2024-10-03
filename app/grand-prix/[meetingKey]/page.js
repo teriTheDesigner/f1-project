@@ -163,11 +163,46 @@ export default function GrandPrix({ params }) {
       }).format(date);
     }
   };
+
+  const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+    }).format(date);
+  };
+
+  const formatDay = (dateString) => {
+    const date = new Date(dateString);
+    const days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    return days[date.getDay()];
+  };
+
   const firstSessionStart = meetingData[0].date_start;
   const lastSessionEnd = meetingData[meetingData.length - 1].date_end;
 
+  const sessionsByDay = meetingData.reduce((acc, session) => {
+    const day = formatDay(session.date_start); // Get the day of the week
+    if (!acc[day]) {
+      acc[day] = []; // Initialize array if the day is not present
+    }
+    acc[day].push(session); // Add session to the correct day
+    return acc;
+  }, {});
+
+  const daysCount = Object.keys(sessionsByDay).length;
+
+  console.log(daysCount);
   return (
-    <div>
+    <div className="bg-black">
       <div
         className="w-full h-[38rem] bg-center bg-cover relative"
         style={{
@@ -176,8 +211,7 @@ export default function GrandPrix({ params }) {
           )})`,
         }}
       >
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-
+        <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.1)] to-black"></div>
         <div className="h-[38rem] flex relative z-10">
           <div className="m-auto flex flex-col items-center gap-6">
             <h1 className="text-white text-7xl font-extrabold">
@@ -199,17 +233,37 @@ export default function GrandPrix({ params }) {
           </div>
         </div>
       </div>
-      <div className="mt-6 ">
-        <h3 className="text-4xl">Weekend Schedule</h3>
-        {meetingData.map((session) => (
-          <div key={session.session_key} className="flex flex-col">
-            <p className="mt-6">{session.session_name}</p>
-            <p className="titillium-web uppercase text-sm">
-              {formatDate(session.date_start, true)} -{" "}
-              {formatDate(session.date_end, true)}
-            </p>
-          </div>
-        ))}
+      <div className="text-white ml-10 mr-10 pb-12">
+        <h3 className="text-4xl mb-4">Weekend Schedule</h3>
+        {/* Render grid with columns representing days */}
+        <div
+          className=" pt-4 border-t-[13px] border-r-[13px] border-[rgba(255,255,255,0.2)] rounded-tr-3xl "
+          style={{
+            display: "grid",
+            gridTemplateColumns: `repeat(${daysCount}, 1fr)`,
+            gap: "3rem",
+          }}
+        >
+          {Object.entries(sessionsByDay).map(([day, sessions]) => (
+            <div
+              key={day}
+              className="flex flex-col p-6  border-dotted border-r-4 border-[rgba(255,255,255,0.2)] last:border-r-0"
+            >
+              <h4 className="text-2xl font-bold mb-4 border-b-4 pb-4  border-[rgba(255,255,255,0.2)]">
+                {day}
+              </h4>
+              {sessions.map((session) => (
+                <div key={session.session_key} className="mb-6 ">
+                  <p className="text-xl">{session.session_name}</p>
+                  <p className="titillium-web uppercase text-sm">
+                    {formatTime(session.date_start)} -{" "}
+                    {formatTime(session.date_end)}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
