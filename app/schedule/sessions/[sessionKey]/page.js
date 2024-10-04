@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2"; // Import Bar chart from react-chartjs-2
+import { SelectDriver } from "@/app/components/SelectDriver";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -125,6 +126,7 @@ export default function OneSession({ params }) {
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">Lap Sector Durations</h2>
+      <SelectDriver />
       {/* Render the Bar chart */}
       <Bar data={data} options={options} />
     </div>
