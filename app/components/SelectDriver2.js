@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
 
-export function SelectDriver() {
+export function SelectDriver2({ onSelectDriver }) {
   const [drivers, setDrivers] = useState([]);
 
   useEffect(() => {
@@ -56,9 +56,11 @@ export function SelectDriver() {
   const updatedDrivers = convertDriverNamesToCamelCase(groupedDrivers);
 
   return (
-    <Select>
+    <Select onValueChange={(value) => onSelectDriver(value)}>
+      {" "}
+      {/* This line passes the selected driver */}
       <SelectTrigger className="w-[280px]">
-        <SelectValue placeholder="Select a driver" />
+        <SelectValue placeholder="Select driver 2" />
       </SelectTrigger>
       <SelectContent>
         {Object.keys(updatedDrivers).map((team) => (

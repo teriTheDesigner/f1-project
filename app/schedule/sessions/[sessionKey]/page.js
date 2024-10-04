@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2"; // Import Bar chart from react-chartjs-2
-import { SelectDriver } from "@/app/components/SelectDriver";
+import { SelectDriver1 } from "@/app/components/SelectDriver1";
+import { SelectDriver2 } from "@/app/components/SelectDriver2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -27,6 +28,8 @@ export default function OneSession({ params }) {
 
   const [sessionData, setSessionData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedDriver1, setSelectedDriver1] = useState(null);
+  const [selectedDriver2, setSelectedDriver2] = useState(null);
 
   useEffect(() => {
     if (sessionKey) {
@@ -35,7 +38,6 @@ export default function OneSession({ params }) {
       )
         .then((response) => response.json())
         .then((data) => {
-          console.log("API Response:", data);
           setSessionData(data);
           setLoading(false);
         })
@@ -54,17 +56,22 @@ export default function OneSession({ params }) {
     return <div>No data found for this event.</div>;
   }
 
-  // Prepare data for the chart
-  const driverNumbers = sessionData.map(
+  // Filter session data based on selected drivers
+  const filteredSessionData = sessionData.filter((driver) =>
+    [selectedDriver1, selectedDriver2].includes(driver.driver_number)
+  );
+
+  // Prepare data for the chart only if drivers are selected
+  const driverNumbers = filteredSessionData.map(
     (driver) => `Driver #${driver.driver_number}`
   );
-  const sector1Durations = sessionData.map(
+  const sector1Durations = filteredSessionData.map(
     (driver) => driver.duration_sector_1
   );
-  const sector2Durations = sessionData.map(
+  const sector2Durations = filteredSessionData.map(
     (driver) => driver.duration_sector_2
   );
-  const sector3Durations = sessionData.map(
+  const sector3Durations = filteredSessionData.map(
     (driver) => driver.duration_sector_3
   );
 
@@ -123,39 +130,22 @@ export default function OneSession({ params }) {
     },
   };
 
+  console.log("selected Driver 1", selectedDriver1);
+  console.log("selected Driver 2", selectedDriver2);
+
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">Lap Sector Durations</h2>
-      <SelectDriver />
-      {/* Render the Bar chart */}
-      <Bar data={data} options={options} />
+      <div className="flex justify-center gap-24 mb-6">
+        <SelectDriver1 onSelectDriver={setSelectedDriver1} />
+        <SelectDriver2 onSelectDriver={setSelectedDriver2} />
+      </div>
+
+      {selectedDriver1 && selectedDriver2 ? (
+        <Bar data={data} options={options} />
+      ) : (
+        <p>Please select two drivers to compare.</p>
+      )}
     </div>
   );
-
-  //   return (
-  //     <div className=" p-6">
-  //       <h2 className="text-2xl font-bold mb-4">Lap Sector Durations</h2>
-  //       <div className="grid grid-cols-1 gap-4">
-  //         {sessionData.map((driver) => (
-  //           <div key={driver.driver_number} className="border p-4 rounded">
-  //             <h3 className="text-xl font-semibold mb-2">
-  //               Driver #{driver.driver_number}
-  //             </h3>
-  //             <p className="mb-4">
-  //               <strong>LAP Duration:</strong> {driver.lap_duration} sec
-  //             </p>
-  //             <p>
-  //               <strong>Sector 1 Duration:</strong> {driver.duration_sector_1} sec
-  //             </p>
-  //             <p>
-  //               <strong>Sector 2 Duration:</strong> {driver.duration_sector_2} sec
-  //             </p>
-  //             <p>
-  //               <strong>Sector 3 Duration:</strong> {driver.duration_sector_3} sec
-  //             </p>
-  //           </div>
-  //         ))}
-  //       </div>
-  //     </div>
-  //   );
 }
