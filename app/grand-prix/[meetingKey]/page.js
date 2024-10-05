@@ -257,7 +257,7 @@ export default function GrandPrix({ params }) {
                 <div
                   key={session.session_key}
                   onClick={() => handleLinkClick(session.session_key)}
-                  className="mb-6 flex flex-col gap-3 p-4 rounded-lg border-[rgba(255,255,255,0.2)] border-2"
+                  className="mb-6 flex flex-col gap-3 p-4 rounded-lg border-[rgba(255,255,255,0.2)] border-2 cursor-pointer hover:bg-[rgba(255,255,255,0.05)]"
                 >
                   <p className="text-xl">{session.session_name}</p>
                   <p className="titillium-web uppercase  text-[rgba(255,255,255,0.5)]">

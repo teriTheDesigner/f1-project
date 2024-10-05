@@ -1,4 +1,13 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+
 export default function DriverCard({ driver }) {
+  const router = useRouter();
+
+  const handleLinkClick = (driver) => {
+    router.push(`/drivers/${driver}`);
+  };
   return (
     <div
       key={driver.driver_number}
@@ -7,6 +16,7 @@ export default function DriverCard({ driver }) {
         borderTop: `10px solid #${driver.team_colour}`,
         borderRight: `10px solid #${driver.team_colour}`,
       }}
+      onClick={() => handleLinkClick(driver.driver_number)}
     >
       {" "}
       <img
