@@ -24,8 +24,8 @@ ChartJS.register(
 
 export default function OneSession({ params }) {
   const { sessionKey } = params;
-  console.log(sessionKey);
 
+  const [drivers, setDrivers] = useState([]);
   const [sessionData, setSessionData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedDriver1, setSelectedDriver1] = useState(null);
@@ -33,16 +33,23 @@ export default function OneSession({ params }) {
 
   useEffect(() => {
     if (sessionKey) {
-      fetch(
-        `https://api.openf1.org/v1/laps?session_key=${sessionKey}&lap_number=2`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setSessionData(data);
+      Promise.all([
+        fetch(
+          `https://api.openf1.org/v1/laps?session_key=${sessionKey}&lap_number=2`
+        ).then((response) => response.json()),
+        fetch(
+          `https://api.openf1.org/v1/drivers?session_key=${sessionKey}`
+        ).then((response) => response.json()),
+      ])
+        .then(([sessionData, allDriversData]) => {
+          setSessionData(sessionData);
+          setDrivers(allDriversData);
           setLoading(false);
+
+          console.log("All drivers data for this session:", allDriversData);
         })
         .catch((error) => {
-          console.error("Error fetching session data:", error);
+          console.error("Error fetching data:", error);
           setLoading(false);
         });
     }
@@ -56,15 +63,22 @@ export default function OneSession({ params }) {
     return <div>No data found for this event.</div>;
   }
 
-  // Filter session data based on selected drivers
   const filteredSessionData = sessionData.filter((driver) =>
     [selectedDriver1, selectedDriver2].includes(driver.driver_number)
   );
 
+  const driverMap = drivers.reduce((acc, driver) => {
+    acc[driver.driver_number] = driver.full_name;
+    return acc;
+  }, {});
+
   // Prepare data for the chart only if drivers are selected
-  const driverNumbers = filteredSessionData.map(
-    (driver) => `Driver #${driver.driver_number}`
+  const driverNames = filteredSessionData.map(
+    (driver) =>
+      driverMap[driver.driver_number] || `Driver #${driver.driver_number}`
   );
+
+  console.log("Driver Names for Chart:", driverNames);
   const sector1Durations = filteredSessionData.map(
     (driver) => driver.duration_sector_1
   );
@@ -76,28 +90,28 @@ export default function OneSession({ params }) {
   );
 
   const data = {
-    labels: driverNumbers, // Driver numbers as labels on the x-axis
+    labels: driverNames, // Driver names as labels on the x-axis
     datasets: [
       {
         label: "Sector 1 Duration",
         backgroundColor: "rgba(75,192,192,0.6)",
         borderColor: "rgba(75,192,192,1)",
         borderWidth: 1,
-        data: sector1Durations, // Sector 1 duration values
+        data: sector1Durations,
       },
       {
         label: "Sector 2 Duration",
         backgroundColor: "rgba(153,102,255,0.6)",
         borderColor: "rgba(153,102,255,1)",
         borderWidth: 1,
-        data: sector2Durations, // Sector 2 duration values
+        data: sector2Durations,
       },
       {
         label: "Sector 3 Duration",
         backgroundColor: "rgba(255,159,64,0.6)",
         borderColor: "rgba(255,159,64,1)",
         borderWidth: 1,
-        data: sector3Durations, // Sector 3 duration values
+        data: sector3Durations,
       },
     ],
   };
