@@ -5,7 +5,6 @@ import { useSearchParams, useRouter } from "next/navigation";
 
 export default function GrandPrix({ params }) {
   const { meetingKey } = params;
-  // console.log("Meeting Key:", meetingKey);
   const [meetingData, setMeetingData] = useState(null);
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
@@ -13,12 +12,9 @@ export default function GrandPrix({ params }) {
 
   useEffect(() => {
     if (meetingKey) {
-      // console.log("Meeting Key:", meetingKey);
-
       fetch(`https://api.openf1.org/v1/sessions?meeting_key=${meetingKey}`)
         .then((response) => response.json())
         .then((data) => {
-          console.log("API Response:", data);
           setMeetingData(data);
           setLoading(false);
         })
@@ -201,7 +197,7 @@ export default function GrandPrix({ params }) {
   }, {});
 
   const daysCount = Object.keys(sessionsByDay).length;
-  console.log("all Sessions", sessionsByDay);
+
   return (
     <div className="bg-black">
       <div

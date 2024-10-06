@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2"; // Import Bar chart from react-chartjs-2
 import { SelectDriver1 } from "@/app/components/SelectDriver1";
 import { SelectDriver2 } from "@/app/components/SelectDriver2";
+import { SelectLap } from "@/app/components/SelectLap";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -28,14 +29,15 @@ export default function OneSession({ params }) {
   const [drivers, setDrivers] = useState([]);
   const [sessionData, setSessionData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selectedDriver1, setSelectedDriver1] = useState(null);
-  const [selectedDriver2, setSelectedDriver2] = useState(null);
+  const [selectedDriver1, setSelectedDriver1] = useState("1");
+  const [selectedDriver2, setSelectedDriver2] = useState("4");
+  const [selectedLap, setSelectedLap] = useState("5");
 
   useEffect(() => {
     if (sessionKey) {
       Promise.all([
         fetch(
-          `https://api.openf1.org/v1/laps?session_key=${sessionKey}&lap_number=2`
+          `https://api.openf1.org/v1/laps?session_key=${sessionKey}&lap_number=${selectedLap}`
         ).then((response) => response.json()),
         fetch(
           `https://api.openf1.org/v1/drivers?session_key=${sessionKey}`
@@ -45,15 +47,13 @@ export default function OneSession({ params }) {
           setSessionData(sessionData);
           setDrivers(allDriversData);
           setLoading(false);
-
-          console.log("All drivers data for this session:", allDriversData);
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
           setLoading(false);
         });
     }
-  }, [sessionKey]);
+  }, [sessionKey, selectedLap]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -78,7 +78,6 @@ export default function OneSession({ params }) {
       driverMap[driver.driver_number] || `Driver #${driver.driver_number}`
   );
 
-  console.log("Driver Names for Chart:", driverNames);
   const sector1Durations = filteredSessionData.map(
     (driver) => driver.duration_sector_1
   );
@@ -144,15 +143,22 @@ export default function OneSession({ params }) {
     },
   };
 
-  console.log("selected Driver 1", selectedDriver1);
-  console.log("selected Driver 2", selectedDriver2);
+  // console.log("selected Driver 1", selectedDriver1);
+  // console.log("selected Driver 2", selectedDriver2);
 
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">Lap Sector Durations</h2>
       <div className="flex justify-center gap-24 mb-6">
-        <SelectDriver1 onSelectDriver={setSelectedDriver1} />
-        <SelectDriver2 onSelectDriver={setSelectedDriver2} />
+        <SelectDriver1
+          sessionKey={sessionKey}
+          onSelectDriver={setSelectedDriver1}
+        />
+        <SelectDriver2
+          sessionKey={sessionKey}
+          onSelectDriver={setSelectedDriver2}
+        />
+        <SelectLap sessionKey={sessionKey} />
       </div>
 
       {selectedDriver1 && selectedDriver2 ? (

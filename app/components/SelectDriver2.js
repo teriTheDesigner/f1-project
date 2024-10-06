@@ -9,15 +9,14 @@ import {
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
 
-export function SelectDriver2({ onSelectDriver }) {
+export function SelectDriver2({ sessionKey, onSelectDriver }) {
   const [drivers, setDrivers] = useState([]);
 
   useEffect(() => {
-    fetch("https://api.openf1.org/v1/drivers?session_key=9582")
+    fetch(`https://api.openf1.org/v1/drivers?session_key=${sessionKey}`)
       .then((response) => response.json())
       .then((data) => {
         setDrivers(data);
-        console.log(data);
       })
       .catch((error) => console.error("Error fetching driver data:", error));
   }, []);
